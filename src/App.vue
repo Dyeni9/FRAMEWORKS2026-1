@@ -3,6 +3,16 @@ import { ref } from 'vue'
 
 const novoItem = ref('')
 const cesta = ref([])
+ 
+const adicionarProduto = () => {
+  if (novoItem.value.trim() !== '') {
+    cesta.value.push({
+      id: Date.now(),
+      nome: novoItem.value
+    })
+    novoItem.value = ''
+  }
+}
 </script>
 
 <template>
@@ -11,12 +21,15 @@ const cesta = ref([])
 
     <input 
       v-model="novoItem" 
+      @keyup.enter="adicionarProduto" 
       placeholder="Digite o produto..."
     >
-    <button>Adicionar</button>
+    <button @click="adicionarProduto">Adicionar</button>
+
+    <ul>
+      <li v-for="item in cesta" :key="item.id">
+        {{ item.nome }}
+      </li>
+    </ul>
   </div>
 </template>
-
-<style scoped>
-.container { font-family: sans-serif; max-width: 400px; margin: 20px auto; }
-</style>
